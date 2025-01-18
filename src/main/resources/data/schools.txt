@@ -1,0 +1,7 @@
+# SCHOOL_NAME|LOCATION_ADDRESS,LOCATION_CITY,LOCATION_COUNTRY,LOCATION_PHONE
+
+UOC Central|Av. Tibidabo 39,Barcelona,Spain,934567890
+UOC North Campus|Passeig de Gràcia 50,Barcelona,Spain,938765432|Carrer de Balmes 34,Barcelona,Spain,931112223|Carrer de Casp 12,Barcelona,Spain,930112334
+UOC South Campus|Carrer d'Aragó 123,Barcelona,Spain,936789012|Carrer de Mallorca 456,Barcelona,Spain,934455667
+UOC East Hub|Carrer de València 789,Barcelona,Spain,932345678|Carrer del Consell de Cent 101,Barcelona,Spain,938888999|Carrer de Pau Claris 90,Barcelona,Spain,931231231|Carrer de Diputació 50,Barcelona,Spain,935678912|Carrer de Londres 14,Barcelona,Spain,930567123
+UOC West Institute|Carrer de Provença 234,Barcelona,Spain,937654321

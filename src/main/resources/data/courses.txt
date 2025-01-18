@@ -1,0 +1,11 @@
+# TYPE|NAME|CODE|CREDITS|HOURS|TEACHER_NIF|ADDITIONAL_INFO
+
+CourseWithExam|Algorithms and Data Structures|CS101|6|90|12345678A|2024-01-15T09:00,UOC Central,Av. Tibidabo 39,Room 101
+CourseWithExam|Organic Chemistry|CHEM201|6|100|44556677F|2024-02-20T14:00,UOC North Campus,Passeig de Gràcia 50,Lab 5
+CourseWithExam|Calculus II|MATH202|5|70|22334455D|2024-03-10T10:30,UOC South Campus,Carrer d'Aragó 123,Room 202
+CourseWithoutExam|Introduction to Philosophy|PHL101|3|45|88990011J|
+CourseWithPracticeGroup|Software Engineering|SE202|6|120|87654321B|LONG,30
+CourseWithPracticeIndividual|Creative Writing|CW301|4|60|66778899H|SHORT
+CourseWithPracticeGroup|Advanced Biology|BIO202|6|110|33445566E|LONG,25
+CourseWithPracticeIndividual|Physics Lab|PHYS301|5|80|11223344C|SHORT
+CourseWithoutExam|Art History|ART102|3|40|77889900I|

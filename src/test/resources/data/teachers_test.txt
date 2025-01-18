@@ -1,0 +1,12 @@
+# NIF|NAME|SURNAME|BIRTHDATE|DEPARTMENT
+
+12345678A|John|Doe|1980-05-14|Computer Science
+87654321B|Jane|Smith|1985-08-22|Mathematics
+11223344C|Alice|Johnson|1990-03-10|Physics
+22334455D|Bob|Brown|1978-12-01|Engineering
+33445566E|Emily|Davis|1982-07-19|Biology
+44556677F|Michael|Wilson|1975-10-05|Chemistry
+55667788G|Sarah|Miller|1992-04-25|History
+66778899H|David|Taylor|1988-11-15|Literature
+77889900I|Laura|Anderson|1995-02-28|Arts
+88990011J|Chris|Moore|1983-06-30|Philosophy
