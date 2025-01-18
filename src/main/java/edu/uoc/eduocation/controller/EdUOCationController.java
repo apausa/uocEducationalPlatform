@@ -1,6 +1,10 @@
 package edu.uoc.eduocation.controller;
 
+import edu.uoc.eduocation.model.course.Course;
+import edu.uoc.eduocation.model.enrollment.Enrollment;
 import edu.uoc.eduocation.model.school.School;
+import edu.uoc.eduocation.model.group.Group;
+import edu.uoc.eduocation.model.user.UserTeacher;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -12,6 +16,10 @@ import java.util.List;
  */
 public class EdUOCationController {
     private LinkedList<School> schools;
+    private LinkedList<UserTeacher> teachers;
+    private LinkedList<Course> courses;
+    private LinkedList<Group> groups;
+    private LinkedList<Enrollment> enrollments;
 
     /**
      * Constructor that loads the data from the files
@@ -29,6 +37,10 @@ public class EdUOCationController {
             String enrollmentsFilename
     ) {
         schools = new LinkedList<>();
+        teachers = new LinkedList<>();
+        courses = new LinkedList<>();
+        groups = new LinkedList<>();
+        enrollments = new LinkedList<>();
 
         loadSchools(schoolsFilename);
         loadTeachers(teachersFilename);
@@ -211,7 +223,6 @@ public class EdUOCationController {
      * @param locations Array of strings with the format "name, address, city, country"
      */
     public void addSchool(String name, String... locations) {
-        // TODO
         schools.add(new School(name, locations));
     }
 
@@ -223,9 +234,20 @@ public class EdUOCationController {
      * @param birthdate Birthdate of the teacher
      * @param department Department of the teacher
      */
-    public void addTeacher(String nif, String name, String surname, LocalDate birthdate, String department) {
-        //TODO
-
+    public void addTeacher(
+            String nif,
+            String name,
+            String surname,
+            LocalDate birthdate,
+            String department
+    ) {
+        teachers.add(new UserTeacher(
+                nif,
+                name,
+                surname,
+                birthdate,
+                department
+        ));
     }
 
     /**
@@ -238,8 +260,24 @@ public class EdUOCationController {
      * @param teacherNif NIF of the teacher
      * @param additionalInfo Additional information for the course (exam or practice information)
      */
-    public void addCourse(String type, String name, String code, int credits, int hours, String teacherNif, String additionalInfo) {
-        //TODO
+    public void addCourse(
+            String type,
+            String name,
+            String code,
+            int credits,
+            int hours,
+            String teacherNif,
+            String additionalInfo
+    ) {
+        courses.add(new Course(
+                type,
+                name,
+                code,
+                credits,
+                hours,
+                teacherNif,
+                additionalInfo
+        ));
     }
 
     /**
@@ -249,8 +287,18 @@ public class EdUOCationController {
      * @param tutorNIF NIF of the tutor
      * @param studentData Array of the students data
      */
-    public void addStudentGroup(String schoolName, String groupName, String tutorNIF, String[] studentData) {
-        //TODO
+    public void addStudentGroup(
+            String schoolName,
+            String groupName,
+            String tutorNIF,
+            String[] studentData
+    ) {
+        groups.add(new Group(
+                schoolName,
+                groupName,
+                tutorNIF,
+                studentData
+        ));
     }
 
     /**
@@ -261,8 +309,20 @@ public class EdUOCationController {
      * @param enrollmentType Type of the enrollment (individual or multiple)
      * @param additionalInfo Additional information for the enrollment
      */
-    public void addEnrollment(String studentNIF, String courseCode, String semester, String enrollmentType, String additionalInfo) {
-        //TODO
+    public void addEnrollment(
+            String studentNIF,
+            String courseCode,
+            String semester,
+            String enrollmentType,
+            String additionalInfo
+    ) {
+        enrollments.add(new Enrollment(
+                studentNIF,
+                courseCode,
+                semester,
+                enrollmentType,
+                additionalInfo
+        ));
     }
 
     public boolean updateEnrollmentMark(String course, String semester, String status, String studentNif, double mark) {

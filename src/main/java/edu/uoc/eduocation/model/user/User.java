@@ -1,18 +1,18 @@
 package edu.uoc.eduocation.model.user;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public abstract class User {
     private String nif;
     private String name;
     private String surname;
-    private Date birthdate;
+    private LocalDate birthdate;
 
     public User (
             String nif,
             String name,
             String surname,
-            Date birthdate
+            LocalDate birthdate
     ) {
         setNif(nif);
         setName(name);
@@ -44,11 +44,11 @@ public abstract class User {
         return surname;
     }
 
-    public void setBirthdate(Date birthdate) {
+    public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
     }
 
-    public Date getBirthdate() {
+    public LocalDate getBirthdate() {
         return birthdate;
     }
 }

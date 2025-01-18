@@ -1,15 +1,25 @@
 package edu.uoc.eduocation.model.user;
 
-import java.util.Date;
+import edu.uoc.eduocation.model.course.Course;
+import edu.uoc.eduocation.model.group.Group;
+
+import java.time.LocalDate;
+import java.util.LinkedList;
 
 public class UserTeacher extends User {
     private String department;
+
+    // Group class
+    private LinkedList<Group> groups;
+
+    // Course class
+    private Course course;
 
     public UserTeacher(
             String nif,
             String name,
             String surname,
-            Date birthdate,
+            LocalDate birthdate,
             String department
     ) {
         super(nif, name, surname, birthdate);

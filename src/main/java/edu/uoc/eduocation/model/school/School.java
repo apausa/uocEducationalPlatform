@@ -1,11 +1,18 @@
 package edu.uoc.eduocation.model.school;
 
+import edu.uoc.eduocation.model.group.Group;
+
 import java.util.LinkedList;
 
 public class School {
     private String name;
+
+    // Location class
     private LinkedList<Location> locations;
     private Integer numberOfLocations;
+
+    // Group class
+    private LinkedList<Group> groups;
     private Integer numberOfGroups;
 
     public School(
@@ -13,14 +20,6 @@ public class School {
             String[] locations
     ) {
         setName(name);
-
-        this.locations = new LinkedList<>();
-
-        for (String location: locations) {
-            // TODO CONTROL ERRORS
-            String[] attributes = location.split(",");
-            setLocation(attributes[0], attributes[1], attributes[2], attributes[3]);
-        }
     }
 
     public void setName(String name){
@@ -29,14 +28,5 @@ public class School {
 
     public String getName(){
         return name;
-    }
-
-    public void setLocation(
-            String address,
-            String city,
-            String country,
-            String phoneNumber
-    ) {
-        locations.add(new Location(address, city, country, phoneNumber));
     }
 }
