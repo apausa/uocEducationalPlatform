@@ -1,15 +1,17 @@
 package edu.uoc.eduocation.controller;
 
+import edu.uoc.eduocation.model.school.School;
+
 import java.io.*;
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Controller class for the EdUOCation application
  */
 public class EdUOCationController {
-
-    //TODO: Define the attributes
+    private LinkedList<School> schools;
 
     /**
      * Constructor that loads the data from the files
@@ -19,8 +21,20 @@ public class EdUOCationController {
      * @param studentGroupsFilename Name of the file with the student groups data
      * @param enrollmentsFilename Name of the file with the enrollments data
      */
-    public EdUOCationController(String schoolsFilename, String teachersFilename, String courseFilename, String studentGroupsFilename, String enrollmentsFilename) {
-        //TODO
+    public EdUOCationController(
+            String schoolsFilename,
+            String teachersFilename,
+            String courseFilename,
+            String studentGroupsFilename,
+            String enrollmentsFilename
+    ) {
+        schools = new LinkedList<>();
+
+        loadSchools(schoolsFilename);
+        loadTeachers(teachersFilename);
+        loadCourses(courseFilename);
+        loadStudentGroups(studentGroupsFilename);
+        loadEnrollments(enrollmentsFilename);
     }
 
     /**
@@ -197,7 +211,8 @@ public class EdUOCationController {
      * @param locations Array of strings with the format "name, address, city, country"
      */
     public void addSchool(String name, String... locations) {
-        //TODO
+        // TODO
+        schools.add(new School(name, locations));
     }
 
     /**
@@ -210,6 +225,7 @@ public class EdUOCationController {
      */
     public void addTeacher(String nif, String name, String surname, LocalDate birthdate, String department) {
         //TODO
+
     }
 
     /**
