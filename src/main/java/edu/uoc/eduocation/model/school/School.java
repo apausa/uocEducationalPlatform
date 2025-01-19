@@ -6,20 +6,17 @@ import java.util.LinkedList;
 
 public class School {
     private String name;
-
-    // Location class
     private LinkedList<Location> locations;
-    private Integer numberOfLocations;
-
-    // Group class
     private LinkedList<Group> groups;
-    private Integer numberOfGroups;
 
     public School(
             String name,
-            String[] locations
+            LinkedList<Location> locations
     ) {
         setName(name);
+        setLocations(locations);
+
+        this.groups = new LinkedList<>();
     }
 
     public void setName(String name){
@@ -29,4 +26,21 @@ public class School {
     public String getName(){
         return name;
     }
+
+    public void setLocations(LinkedList<Location> locations){
+        this.locations = locations;
+    }
+
+    public LinkedList<Location> getLocations(){
+        return locations;
+    }
+
+    public void addGroup(Group group){
+        this.groups.add(group);
+    }
+
+    public LinkedList<Group> getGroups(){
+        return groups;
+    }
 }
+

@@ -1,31 +1,23 @@
 package edu.uoc.eduocation.model.group;
 
-import edu.uoc.eduocation.model.school.School;
-import edu.uoc.eduocation.model.user.UserStudent;
-import edu.uoc.eduocation.model.user.UserTeacher;
+import edu.uoc.eduocation.model.user.types.UserStudent;
+import edu.uoc.eduocation.model.user.types.UserTeacher;
 
 import java.util.LinkedList;
 
 public class Group {
     private String name;
-
-    // School class
-    private School school;
-
-    // Teacher class
     private UserTeacher tutor;
-
-    // Student class
     private LinkedList<UserStudent> students;
-    private int numberOfStudents;
 
     public Group(
-            String schoolName,
-            String groupName,
-            String tutorNIF,
-            String[] studentData
+            String name,
+            UserTeacher tutor,
+            LinkedList<UserStudent> students
             ) {
-        setName(groupName);
+        setName(name);
+        setTutor(tutor);
+        setStudents(students);
     }
 
     public void setName(String name) {
@@ -35,4 +27,21 @@ public class Group {
     public String getName() {
         return name;
     }
+
+    public void setTutor(UserTeacher tutor) {
+        this.tutor = tutor;
+    }
+
+    public UserTeacher getTutor() {
+        return tutor;
+    }
+
+    public void setStudents(LinkedList<UserStudent> students) {
+        this.students = students;
+    }
+
+    public LinkedList<UserStudent> getStudents() {
+        return students;
+    }
 }
+

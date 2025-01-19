@@ -4,15 +4,7 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="distributionType" value="LOCAL" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/../../../../../../../‍ software development/3rd semester/diseño y programación orientada a objetos/exercises/⏰ pr1/code/EdUOCation" />
-        <option name="gradleHome" value="$PROJECT_DIR$/../../../../../../../../gradle-8.10.2" />
-        <option name="gradleJvm" value="21" />
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="/Applications/gradle-8.10.2" />
         <option name="gradleJvm" value="21" />
         <option name="modules">
           <set>

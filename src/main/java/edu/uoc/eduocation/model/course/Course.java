@@ -1,35 +1,32 @@
 package edu.uoc.eduocation.model.course;
 
-import edu.uoc.eduocation.model.user.UserStudent;
-import edu.uoc.eduocation.model.user.UserTeacher;
-
-import java.util.LinkedList;
-
-public class Course {
+public abstract class Course {
+    private tCourseType type;
     private String name;
     private String code;
     private Integer credits;
     private Integer hours;
 
-    // Teacher class
-    private UserTeacher teacher;
-
-    // Student class
-    private LinkedList<UserStudent> students;
-
     public Course(
-            String type,
+            tCourseType type,
             String name,
             String code,
             Integer credits,
-            Integer hours,
-            String teacherNif,
-            String additionalInfo
+            Integer hours
     ) {
+        setType(type);
         setName(name);
         setCode(code);
         setCredits(credits);
         setHours(hours);
+    }
+
+    public void setType(tCourseType type) {
+        this.type = type;
+    }
+
+    public tCourseType getType() {
+        return type;
     }
 
     public void setName(String name) {

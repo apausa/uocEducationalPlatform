@@ -1,15 +1,27 @@
 package edu.uoc.eduocation.controller;
 
 import edu.uoc.eduocation.model.course.Course;
+import edu.uoc.eduocation.model.course.tCourseType;
+import edu.uoc.eduocation.model.course.types.*;
 import edu.uoc.eduocation.model.enrollment.Enrollment;
+import edu.uoc.eduocation.model.enrollment.tEnrollmentStatus;
+import edu.uoc.eduocation.model.enrollment.tEnrollmentType;
+import edu.uoc.eduocation.model.enrollment.types.EnrollmentIndividual;
+import edu.uoc.eduocation.model.enrollment.types.EnrollmentMultiple;
+import edu.uoc.eduocation.model.school.Location;
 import edu.uoc.eduocation.model.school.School;
 import edu.uoc.eduocation.model.group.Group;
-import edu.uoc.eduocation.model.user.UserTeacher;
+import edu.uoc.eduocation.model.user.types.UserStudent;
+import edu.uoc.eduocation.model.user.types.UserTeacher;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import static edu.uoc.eduocation.model.enrollment.tEnrollmentType.MULTIPLE;
 
 /**
  * Controller class for the EdUOCation application
@@ -18,8 +30,6 @@ public class EdUOCationController {
     private LinkedList<School> schools;
     private LinkedList<UserTeacher> teachers;
     private LinkedList<Course> courses;
-    private LinkedList<Group> groups;
-    private LinkedList<Enrollment> enrollments;
 
     /**
      * Constructor that loads the data from the files
@@ -39,8 +49,6 @@ public class EdUOCationController {
         schools = new LinkedList<>();
         teachers = new LinkedList<>();
         courses = new LinkedList<>();
-        groups = new LinkedList<>();
-        enrollments = new LinkedList<>();
 
         loadSchools(schoolsFilename);
         loadTeachers(teachersFilename);
@@ -222,8 +230,29 @@ public class EdUOCationController {
      * @param name Name of the student group
      * @param locations Array of strings with the format "name, address, city, country"
      */
-    public void addSchool(String name, String... locations) {
-        schools.add(new School(name, locations));
+    public void addSchool(
+            String name,
+            String... locations
+    ) {
+        // Create locations
+        LinkedList<Location> schoolLocations = new LinkedList<>();
+
+        for (String location : locations) {
+            String[] arguments = location.split(",");
+
+            schoolLocations.add(new Location(
+                    arguments[0], // address
+                    arguments[1], // city
+                    arguments[2], // country
+                    arguments[3]  // phoneNumber
+            ));
+        }
+
+        // Create school
+        schools.add(new School(
+                name,
+                schoolLocations
+        ));
     }
 
     /**
@@ -241,6 +270,7 @@ public class EdUOCationController {
             LocalDate birthdate,
             String department
     ) {
+        // Create teacher
         teachers.add(new UserTeacher(
                 nif,
                 name,
@@ -269,15 +299,58 @@ public class EdUOCationController {
             String teacherNif,
             String additionalInfo
     ) {
-        courses.add(new Course(
-                type,
-                name,
-                code,
-                credits,
-                hours,
-                teacherNif,
-                additionalInfo
-        ));
+        UserTeacher teacher = getTeacher(teacherNif);
+
+        if (teacher == null)
+            return;
+
+        String[] arguments = additionalInfo.split(",");
+
+        switch(tCourseType.valueOf(type)) {
+            case CourseWithoutExam:
+                courses.add(new CourseWithoutExam(
+                        tCourseType.valueOf(type),
+                        name,
+                        code,
+                        credits,
+                        hours
+                ));
+                break;
+            case CourseWithExam:
+                courses.add(new CourseWithExam(
+                        tCourseType.valueOf(type),
+                        name,
+                        code,
+                        credits,
+                        hours,
+                        LocalDate.parse(arguments[0]), // Date
+                        LocalTime.parse(arguments[1]), // Time
+                        arguments[2], // Location
+                        arguments[3]  // Room
+                ));
+                break;
+            case CourseWithPracticeGroup:
+                courses.add(new CourseWithPracticeGroup(
+                        tCourseType.valueOf(type),
+                        name,
+                        code,
+                        credits,
+                        hours,
+                        tPracticeType.valueOf(arguments[0]), // Practice type
+                        Integer.parseInt(arguments[1]) // Maximum students
+                ));
+                break;
+            case CourseWithPracticeIndividual:
+                courses.add(new CourseWithPracticeIndividual(
+                        tCourseType.valueOf(type),
+                        name,
+                        code,
+                        credits,
+                        hours,
+                        tPracticeType.valueOf(arguments[0]) // Practice type
+                ));
+                break;
+        }
     }
 
     /**
@@ -293,12 +366,36 @@ public class EdUOCationController {
             String tutorNIF,
             String[] studentData
     ) {
-        groups.add(new Group(
-                schoolName,
-                groupName,
-                tutorNIF,
-                studentData
-        ));
+        // Get teacher
+        UserTeacher tutor = getTeacher(tutorNIF);
+
+        if (tutor == null)
+            return;
+
+        // Create students
+        LinkedList<UserStudent> students = new LinkedList<>();
+
+        for (String student: studentData) {
+            String[] arguments = student.split(":");
+            students.add(new UserStudent(
+                    arguments[0], // nif
+                    arguments[1], // name
+                    arguments[2], // surname
+                    LocalDate.parse(arguments[3]) // birthdate
+            ));
+        }
+
+        // Get school
+        for (School currentSchool : schools) {
+            if (currentSchool.getName().equals(schoolName)) {
+                // Create and add group to school
+                currentSchool.addGroup(new Group(
+                        groupName,
+                        tutor,
+                        students
+                ));
+            }
+        }
     }
 
     /**
@@ -316,26 +413,72 @@ public class EdUOCationController {
             String enrollmentType,
             String additionalInfo
     ) {
-        enrollments.add(new Enrollment(
-                studentNIF,
-                courseCode,
-                semester,
-                enrollmentType,
-                additionalInfo
-        ));
+        Course course = getCourse(courseCode);
+
+        if (course == null)
+            return;
+
+        for (School school : schools) {
+            for (Group group : school.getGroups()) {
+                for (UserStudent student : group.getStudents()) {
+                    if (student.getNif().equals(studentNIF) && tEnrollmentType.valueOf(enrollmentType) == MULTIPLE) {
+                        String[] groupIds = additionalInfo.split(",");
+
+                        student.addEnrollment(new EnrollmentMultiple(
+                                semester,
+                                course,
+                                groupIds
+                        ));
+                    } else if (student.getNif().equals(studentNIF)) {
+                        student.addEnrollment(new EnrollmentIndividual(
+                                semester,
+                                course
+                        ));
+                    }
+                }
+            }
+        }
     }
 
-    public boolean updateEnrollmentMark(String course, String semester, String status, String studentNif, double mark) {
-        //TODO
-    }
+    public boolean updateEnrollmentMark(
+            String course,
+            String semester,
+            String status,
+            String studentNif,
+            double mark
+    ) {
+        boolean isChanged = false;
 
+        for (School school : schools) {
+            for (Group group : school.getGroups()) {
+                for (UserStudent student : group.getStudents()) {
+                    if (student.getNif().equals(studentNif)) {
+                        for (Enrollment enrollment : student.getEnrollments()) {
+                            if (
+                                    enrollment.getCourse().getName().equals(course) &&
+                                    enrollment.getSemester().equals(semester) &&
+                                    enrollment.getStatus().equals(tEnrollmentStatus.valueOf(status))
+                            ) {
+                                enrollment.setMark(mark);
+                                enrollment.setStatus(tEnrollmentStatus.COMPLETED);
+                                isChanged = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return isChanged;
+    }
 
     /**
      * Get the list of schools
      * @return List of schools
      */
     public List<String> getSchools() {
-        //TODO
+        List<String> schoolsList = new ArrayList<>();
+        return schoolsList;
     }
 
     /**
@@ -343,7 +486,8 @@ public class EdUOCationController {
      * @return List of teachers
      */
     public List<String> getTeachers() {
-        //TODO
+        List<String> teachersList = new ArrayList<>();
+        return teachersList;
     }
 
     /**
@@ -351,7 +495,8 @@ public class EdUOCationController {
      * @return List of courses
      */
     public List<String> getCourses() {
-        //TODO
+        List<String> coursesList = new ArrayList<>();
+        return coursesList;
     }
 
     /**
@@ -360,7 +505,8 @@ public class EdUOCationController {
      * @return List of groups
      */
     public List<String> getGroups(String schoolName) {
-        //TODO
+        List<String> groupsList = new ArrayList<>();
+        return groupsList;
     }
 
     /**
@@ -370,7 +516,8 @@ public class EdUOCationController {
      * @return List of students
      */
     public List<String> getStudents(String schoolName, String groupName) {
-        //TODO
+        List<String> studentsList = new ArrayList<>();
+        return studentsList;
     }
 
     /**
@@ -381,7 +528,26 @@ public class EdUOCationController {
      * @return List of enrollments
      */
     public List<String> getEnrollments(String schoolName, String groupName, String studentNIF) {
-        //TODO
+        List<String> enrollmentsList = new ArrayList<>();
+        return enrollmentsList;
+    }
+
+    private UserTeacher getTeacher(String teacherNif) {
+        for (UserTeacher teacher : teachers) {
+            if (teacher.getNif().equals(teacherNif))
+                return teacher;
+        }
+
+        return null;
+    }
+
+    private Course getCourse(String courseCode) {
+        for (Course course : courses) {
+            if (course.getCode().equals(courseCode))
+                return course;
+        }
+
+        return null;
     }
 
 }

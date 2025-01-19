@@ -1,27 +1,22 @@
 package edu.uoc.eduocation.model.enrollment;
 
 import edu.uoc.eduocation.model.course.Course;
-import edu.uoc.eduocation.model.user.UserStudent;
 
-public class Enrollment {
+public abstract class Enrollment {
     private String semester;
-    private tStatus status;
+    private tEnrollmentStatus status;
     private double mark;
-
-    // Student class
-    private UserStudent student;
-
-    // Course class
     private Course course;
 
     public Enrollment(
-            String studentNIF,
-            String courseCode,
             String semester,
-            String enrollmentType,
-            String additionalInfo
-    ) {
+            Course course,
+            tEnrollmentStatus status
 
+    ) {
+        setSemester(semester);
+        setCourse(course);
+        setStatus(status);
     }
 
     public void setSemester(String semester) {
@@ -32,11 +27,11 @@ public class Enrollment {
         return semester;
     }
 
-    public void setStatus(tStatus status) {
+    public void setStatus(tEnrollmentStatus status) {
         this.status = status;
     }
 
-    public tStatus getStatus() {
+    public tEnrollmentStatus getStatus() {
         return status;
     }
 
@@ -46,5 +41,13 @@ public class Enrollment {
 
     public double getMark() {
         return mark;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public Course getCourse() {
+        return course;
     }
 }

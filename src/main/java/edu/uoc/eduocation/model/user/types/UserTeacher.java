@@ -1,19 +1,11 @@
-package edu.uoc.eduocation.model.user;
+package edu.uoc.eduocation.model.user.types;
 
-import edu.uoc.eduocation.model.course.Course;
-import edu.uoc.eduocation.model.group.Group;
+import edu.uoc.eduocation.model.user.User;
 
 import java.time.LocalDate;
-import java.util.LinkedList;
 
 public class UserTeacher extends User {
     private String department;
-
-    // Group class
-    private LinkedList<Group> groups;
-
-    // Course class
-    private Course course;
 
     public UserTeacher(
             String nif,
