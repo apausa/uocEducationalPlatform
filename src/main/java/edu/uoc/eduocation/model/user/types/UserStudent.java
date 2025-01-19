@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 
 public class UserStudent extends User {
-    public LinkedList<Enrollment> enrollments;
+    public LinkedList<Enrollment> enrollments = new LinkedList<>();
 
     public UserStudent(
             String nif,
@@ -16,9 +16,9 @@ public class UserStudent extends User {
             LocalDate birthdate
     ) {
         super(nif, name, surname, birthdate);
-
-        this.enrollments = new LinkedList<>();
     }
+
+    // Enrollment class
 
     public void addEnrollment(Enrollment enrollment) {
         this.enrollments.add(enrollment);

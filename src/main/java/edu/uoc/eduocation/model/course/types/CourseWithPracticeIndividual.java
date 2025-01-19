@@ -15,6 +15,7 @@ public class CourseWithPracticeIndividual extends Course {
             tPracticeType practiceType
     ) {
         super(type, name, code, credits, hours);
+
         setPracticeType(practiceType);
     }
 

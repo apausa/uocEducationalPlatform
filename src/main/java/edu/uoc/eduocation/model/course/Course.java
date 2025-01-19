@@ -1,5 +1,10 @@
 package edu.uoc.eduocation.model.course;
 
+import com.google.gson.Gson;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class Course {
     private tCourseType type;
     private String name;
@@ -59,5 +64,21 @@ public abstract class Course {
 
     public Integer getHours() {
         return hours;
+    }
+
+    // Override
+
+    @Override
+    public String toString() {
+        Gson gson = new Gson();
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("type", getType());
+        data.put("name", getName());
+        data.put("code", getCode());
+        data.put("credits", getCredits());
+        data.put("hours", getHours());
+
+        return gson.toJson(data);
     }
 }

@@ -1,13 +1,16 @@
 package edu.uoc.eduocation.model.school;
 
+import com.google.gson.Gson;
 import edu.uoc.eduocation.model.group.Group;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class School {
     private String name;
     private LinkedList<Location> locations;
-    private LinkedList<Group> groups;
+    private LinkedList<Group> groups = new LinkedList<>();
 
     public School(
             String name,
@@ -15,8 +18,6 @@ public class School {
     ) {
         setName(name);
         setLocations(locations);
-
-        this.groups = new LinkedList<>();
     }
 
     public void setName(String name){
@@ -27,6 +28,8 @@ public class School {
         return name;
     }
 
+    // Location class
+
     public void setLocations(LinkedList<Location> locations){
         this.locations = locations;
     }
@@ -35,6 +38,8 @@ public class School {
         return locations;
     }
 
+    // Group class
+
     public void addGroup(Group group){
         this.groups.add(group);
     }
@@ -42,5 +47,18 @@ public class School {
     public LinkedList<Group> getGroups(){
         return groups;
     }
-}
 
+    // Override
+
+    @Override
+    public String toString() {
+        Gson gson = new Gson();
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("name", getName());
+        data.put("numberOfLocations", getLocations().size());
+        data.put("numberOfGroups", getGroups().size());
+
+        return gson.toJson(data);
+    }
+}

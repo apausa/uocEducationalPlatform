@@ -1,9 +1,12 @@
 package edu.uoc.eduocation.model.group;
 
+import com.google.gson.Gson;
 import edu.uoc.eduocation.model.user.types.UserStudent;
 import edu.uoc.eduocation.model.user.types.UserTeacher;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class Group {
     private String name;
@@ -28,6 +31,8 @@ public class Group {
         return name;
     }
 
+    // Tutor class
+
     public void setTutor(UserTeacher tutor) {
         this.tutor = tutor;
     }
@@ -36,12 +41,28 @@ public class Group {
         return tutor;
     }
 
+    // Students class
+
     public void setStudents(LinkedList<UserStudent> students) {
         this.students = students;
     }
 
     public LinkedList<UserStudent> getStudents() {
         return students;
+    }
+
+    // Override
+
+    @Override
+    public String toString() {
+        Gson gson = new Gson();
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("name", getName());
+        data.put("tutorName", getTutor().getName());
+        data.put("numberOfStudents", getStudents().size());
+
+        return gson.toJson(data);
     }
 }
 

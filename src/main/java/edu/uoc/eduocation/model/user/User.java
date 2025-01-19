@@ -1,6 +1,10 @@
 package edu.uoc.eduocation.model.user;
 
+import com.google.gson.Gson;
+
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class User {
     private String nif;
@@ -50,5 +54,18 @@ public abstract class User {
 
     public LocalDate getBirthdate() {
         return birthdate;
+    }
+
+    @Override
+    public String toString() {
+        Gson gson = new Gson();
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("NIF", getNif());
+        data.put("Name", getName());
+        data.put("Surname", getSurname());
+        data.put("Birthdate", getBirthdate().toString());
+
+        return gson.toJson(data);
     }
 }

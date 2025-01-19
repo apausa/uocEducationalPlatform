@@ -1,6 +1,10 @@
 package edu.uoc.eduocation.model.enrollment;
 
+import com.google.gson.Gson;
 import edu.uoc.eduocation.model.course.Course;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Enrollment {
     private String semester;
@@ -43,11 +47,28 @@ public abstract class Enrollment {
         return mark;
     }
 
+    // Course class
+
     public void setCourse(Course course) {
         this.course = course;
     }
 
     public Course getCourse() {
         return course;
+    }
+
+    // Override
+
+    @Override
+    public String toString() {
+        Gson gson = new Gson();
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("course", getCourse().getName());
+        data.put("semester", getSemester());
+        data.put("status", getStatus());
+        data.put("mark", getMark());
+
+        return gson.toJson(data);
     }
 }
