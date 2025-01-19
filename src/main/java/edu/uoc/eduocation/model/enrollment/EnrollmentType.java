@@ -1,6 +1,6 @@
 package edu.uoc.eduocation.model.enrollment;
 
-public enum tEnrollmentType {
+public enum EnrollmentType {
     INDIVIDUAL,
     MULTIPLE
 }

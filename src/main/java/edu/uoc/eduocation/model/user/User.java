@@ -17,39 +17,51 @@ public abstract class User {
             String name,
             String surname,
             LocalDate birthdate
-    ) {
+    ) throws UserException {
         setNif(nif);
         setName(name);
         setSurname(surname);
         setBirthdate(birthdate);
     }
 
-    public void setNif(String nif) {
-        this.nif = nif;
+    public void setNif(String nif) throws UserException {
+        if (nif == null || nif.isBlank() || !nif.matches("^[0-9]{8}[A-Za-z]$"))
+            throw new UserException(UserException.INVALID_NIF);
+        else
+            this.nif = nif.trim();
     }
 
     public String getNif() {
         return nif;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String name) throws UserException {
+        if (name == null || name.isBlank())
+            throw new UserException(UserException.INVALID_NAME);
+        else
+            this.name = name.trim();
     }
 
     public String getName() {
         return name;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setSurname(String surname) throws UserException {
+        if (surname == null || surname.isBlank())
+            throw new UserException(UserException.INVALID_SURNAME);
+        else
+            this.surname = surname.trim();
     }
 
     public String getSurname() {
         return surname;
     }
 
-    public void setBirthdate(LocalDate birthdate) {
-        this.birthdate = birthdate;
+    public void setBirthdate(LocalDate birthdate) throws UserException {
+        if (birthdate == null || birthdate.isAfter(LocalDate.now()))
+            throw new UserException(UserException.INVALID_DATE);
+        else
+            this.birthdate = birthdate;
     }
 
     public LocalDate getBirthdate() {

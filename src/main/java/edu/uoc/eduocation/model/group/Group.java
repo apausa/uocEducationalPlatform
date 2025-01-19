@@ -1,8 +1,8 @@
 package edu.uoc.eduocation.model.group;
 
 import com.google.gson.Gson;
-import edu.uoc.eduocation.model.user.types.UserStudent;
-import edu.uoc.eduocation.model.user.types.UserTeacher;
+import edu.uoc.eduocation.model.user.userStudent.UserStudent;
+import edu.uoc.eduocation.model.user.userTeacher.UserTeacher;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -17,14 +17,17 @@ public class Group {
             String name,
             UserTeacher tutor,
             LinkedList<UserStudent> students
-            ) {
+            ) throws GroupException {
         setName(name);
         setTutor(tutor);
         setStudents(students);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String name) throws GroupException {
+        if (name == null || name.isBlank())
+            throw new GroupException(GroupException.INVALID_NAME);
+        else
+            this.name = name.trim();
     }
 
     public String getName() {

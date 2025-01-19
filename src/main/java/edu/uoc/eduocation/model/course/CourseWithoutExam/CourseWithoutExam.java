@@ -1,16 +1,15 @@
-package edu.uoc.eduocation.model.course.types;
+package edu.uoc.eduocation.model.course.CourseWithoutExam;
 
 import edu.uoc.eduocation.model.course.Course;
-import edu.uoc.eduocation.model.course.tCourseType;
+import edu.uoc.eduocation.model.course.CourseException;
 
 public class CourseWithoutExam extends Course {
     public CourseWithoutExam(
-            tCourseType type,
             String name,
             String code,
             Integer credits,
             Integer hours
-    ) {
-        super(type, name, code, credits, hours);
+    ) throws CourseException {
+        super(name, code, credits, hours);
     }
 }

@@ -1,8 +1,8 @@
-package edu.uoc.eduocation.model.enrollment.types;
+package edu.uoc.eduocation.model.enrollment.enrollmentMultiple;
 
 import edu.uoc.eduocation.model.course.Course;
 import edu.uoc.eduocation.model.enrollment.Enrollment;
-import edu.uoc.eduocation.model.enrollment.tEnrollmentStatus;
+import edu.uoc.eduocation.model.enrollment.EnrollmentStatus;
 
 public class EnrollmentMultiple extends Enrollment {
     String[] groupNifs;
@@ -12,7 +12,7 @@ public class EnrollmentMultiple extends Enrollment {
             Course course,
             String[] groupNifs
     ) {
-        super(semester, course, tEnrollmentStatus.IN_PROGRESS);
+        super(semester, course, EnrollmentStatus.IN_PROGRESS);
 
         setGroupNifs(groupNifs);
     }

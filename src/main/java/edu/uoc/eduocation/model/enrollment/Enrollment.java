@@ -8,14 +8,14 @@ import java.util.Map;
 
 public abstract class Enrollment {
     private String semester;
-    private tEnrollmentStatus status;
+    private EnrollmentStatus status;
     private double mark;
     private Course course;
 
     public Enrollment(
             String semester,
             Course course,
-            tEnrollmentStatus status
+            EnrollmentStatus status
 
     ) {
         setSemester(semester);
@@ -31,11 +31,11 @@ public abstract class Enrollment {
         return semester;
     }
 
-    public void setStatus(tEnrollmentStatus status) {
+    public void setStatus(EnrollmentStatus status) {
         this.status = status;
     }
 
-    public tEnrollmentStatus getStatus() {
+    public EnrollmentStatus getStatus() {
         return status;
     }
 

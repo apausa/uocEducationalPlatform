@@ -1,7 +1,8 @@
-package edu.uoc.eduocation.model.user.types;
+package edu.uoc.eduocation.model.user.userStudent;
 
 import edu.uoc.eduocation.model.enrollment.Enrollment;
 import edu.uoc.eduocation.model.user.User;
+import edu.uoc.eduocation.model.user.UserException;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -14,7 +15,7 @@ public class UserStudent extends User {
             String name,
             String surname,
             LocalDate birthdate
-    ) {
+    ) throws UserException {
         super(nif, name, surname, birthdate);
     }
 

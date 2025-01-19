@@ -1,18 +1,22 @@
 package edu.uoc.eduocation.controller;
 
 import edu.uoc.eduocation.model.course.Course;
-import edu.uoc.eduocation.model.course.tCourseType;
-import edu.uoc.eduocation.model.course.types.*;
+import edu.uoc.eduocation.model.course.CourseType;
+import edu.uoc.eduocation.model.course.CourseWithExam.CourseWithExam;
+import edu.uoc.eduocation.model.course.CourseWithPracticeGroup.CourseWithPracticeGroup;
+import edu.uoc.eduocation.model.course.CourseWithPracticeIndividual.*;
+import edu.uoc.eduocation.model.course.CourseWithoutExam.CourseWithoutExam;
+import edu.uoc.eduocation.model.course.PracticeType;
 import edu.uoc.eduocation.model.enrollment.Enrollment;
-import edu.uoc.eduocation.model.enrollment.tEnrollmentStatus;
-import edu.uoc.eduocation.model.enrollment.tEnrollmentType;
-import edu.uoc.eduocation.model.enrollment.types.EnrollmentIndividual;
-import edu.uoc.eduocation.model.enrollment.types.EnrollmentMultiple;
-import edu.uoc.eduocation.model.school.Location;
+import edu.uoc.eduocation.model.enrollment.EnrollmentStatus;
+import edu.uoc.eduocation.model.enrollment.EnrollmentType;
+import edu.uoc.eduocation.model.enrollment.enrollmentIndividual.EnrollmentIndividual;
+import edu.uoc.eduocation.model.enrollment.enrollmentMultiple.EnrollmentMultiple;
+import edu.uoc.eduocation.model.school.location.Location;
 import edu.uoc.eduocation.model.school.School;
 import edu.uoc.eduocation.model.group.Group;
-import edu.uoc.eduocation.model.user.types.UserStudent;
-import edu.uoc.eduocation.model.user.types.UserTeacher;
+import edu.uoc.eduocation.model.user.userStudent.UserStudent;
+import edu.uoc.eduocation.model.user.userTeacher.UserTeacher;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -22,7 +26,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static edu.uoc.eduocation.model.enrollment.tEnrollmentType.MULTIPLE;
+import static edu.uoc.eduocation.model.enrollment.EnrollmentType.MULTIPLE;
 
 /**
  * Controller class for the EdUOCation application
@@ -306,10 +310,9 @@ public class EdUOCationController {
 
         String[] arguments;
 
-        switch(tCourseType.valueOf(type)) {
+        switch(CourseType.valueOf(type)) {
             case CourseWithoutExam:
                 courses.add(new CourseWithoutExam(
-                        tCourseType.valueOf(type),
                         name,
                         code,
                         credits,
@@ -324,7 +327,6 @@ public class EdUOCationController {
                 LocalTime time = dateTime.toLocalTime();
 
                 courses.add(new CourseWithExam(
-                        tCourseType.valueOf(type),
                         name,
                         code,
                         credits,
@@ -339,12 +341,11 @@ public class EdUOCationController {
                 arguments = additionalInfo.split(",");
 
                 courses.add(new CourseWithPracticeGroup(
-                        tCourseType.valueOf(type),
                         name,
                         code,
                         credits,
                         hours,
-                        tPracticeType.valueOf(arguments[0]), // Practice type
+                        PracticeType.valueOf(arguments[0]), // Practice type
                         Integer.parseInt(arguments[1]) // Maximum students
                 ));
                 break;
@@ -352,12 +353,11 @@ public class EdUOCationController {
                 arguments = additionalInfo.split(",");
 
                 courses.add(new CourseWithPracticeIndividual(
-                        tCourseType.valueOf(type),
                         name,
                         code,
                         credits,
                         hours,
-                        tPracticeType.valueOf(arguments[0]) // Practice type
+                        PracticeType.valueOf(arguments[0]) // Practice type
                 ));
                 break;
         }
@@ -431,7 +431,7 @@ public class EdUOCationController {
         for (School school : schools) {
             for (Group group : school.getGroups()) {
                 for (UserStudent student : group.getStudents()) {
-                    if (student.getNif().equals(studentNIF) && tEnrollmentType.valueOf(enrollmentType) == MULTIPLE) {
+                    if (student.getNif().equals(studentNIF) && EnrollmentType.valueOf(enrollmentType) == MULTIPLE) {
                         String[] groupIds = additionalInfo.split(",");
 
                         student.addEnrollment(new EnrollmentMultiple(
@@ -474,7 +474,7 @@ public class EdUOCationController {
                                     enrollment.getSemester().equals(semester)
                             ) {
                                 enrollment.setMark(mark);
-                                enrollment.setStatus(tEnrollmentStatus.valueOf(status));
+                                enrollment.setStatus(EnrollmentStatus.valueOf(status));
 
                                 return true;
                             }

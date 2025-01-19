@@ -1,6 +1,6 @@
 package edu.uoc.eduocation.model.enrollment;
 
-public enum tEnrollmentStatus {
+public enum EnrollmentStatus {
     PENDING,
     IN_PROGRESS,
     COMPLETED

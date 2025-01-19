@@ -2,6 +2,7 @@ package edu.uoc.eduocation.model.school;
 
 import com.google.gson.Gson;
 import edu.uoc.eduocation.model.group.Group;
+import edu.uoc.eduocation.model.school.location.Location;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -15,13 +16,16 @@ public class School {
     public School(
             String name,
             LinkedList<Location> locations
-    ) {
+    ) throws SchoolException {
         setName(name);
         setLocations(locations);
     }
 
-    public void setName(String name){
-        this.name = name;
+    public void setName(String name) throws SchoolException {
+        if (name == null || name.isBlank())
+            throw new SchoolException(SchoolException.INVALID_NAME);
+        else
+            this.name = name.trim();
     }
 
     public String getName(){
