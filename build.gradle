@@ -64,9 +64,7 @@ tasks.register('testAll', Test) {
     }
 }
 
-//Uncomment task "jar" if you want to create a fat jar (i.e. classes + dependencies).
-//If you generate a fat jar, then the user's computer must have JRE.
-/*jar {
+jar {
     manifest {
         attributes (
                 'Main-Class' : 'edu.uoc.eduocation.Main'
@@ -78,11 +76,8 @@ tasks.register('testAll', Test) {
     } {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
-}*/
+}
 
-//If you want to create a Runtime image with jlink, then
-//you must comment the previous task "jar" and uncomment the
-//following tasks: "jlink" and "jlinkZip"
 /*jlink {
    // imageZip = project.file("${buildDir}/distributions/app-${javafx.platform.classifier}.zip")
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']

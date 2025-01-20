@@ -22,7 +22,7 @@ public class EnrollmentMultiple extends Enrollment {
             Course course,
             String[] nifs
     ) throws UserException, EnrollmentException {
-        super(semester, course, EnrollmentStatus.IN_PROGRESS);
+        super(semester, course);
 
         setGroupNifs(nifs);
     }

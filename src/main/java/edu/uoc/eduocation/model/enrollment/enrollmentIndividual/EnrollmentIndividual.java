@@ -13,6 +13,6 @@ public class EnrollmentIndividual extends Enrollment {
      * @throws EnrollmentException if enrollment validation fails.
      */
     public EnrollmentIndividual(String semester, Course course) throws EnrollmentException {
-        super(semester, course, EnrollmentStatus.PENDING);
+        super(semester, course);
     }
 }

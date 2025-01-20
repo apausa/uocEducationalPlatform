@@ -8,7 +8,7 @@ import java.util.Map;
 
 public abstract class Enrollment {
     private String semester;
-    private EnrollmentStatus status;
+    private EnrollmentStatus status = EnrollmentStatus.IN_PROGRESS;
     private Double mark = null;
     private Course course;
 
@@ -17,17 +17,14 @@ public abstract class Enrollment {
      *
      * @param semester the semester of the enrollment.
      * @param course the enrolled course.
-     * @param status the enrollment status.
      * @throws EnrollmentException if any validation fails.
      */
     public Enrollment(
             String semester,
-            Course course,
-            EnrollmentStatus status
+            Course course
     ) throws EnrollmentException {
         setSemester(semester);
         setCourse(course);
-        setStatus(status);
     }
 
     public void setSemester(String semester) throws EnrollmentException {

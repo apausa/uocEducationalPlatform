@@ -707,13 +707,13 @@ public class EdUOCationController {
     }
 
     /**
-     * Adds a course with an associated practice group.
+     * Adds a course with an associated group practice.
      * @param name the course name.
      * @param code the course code.
      * @param credits the number of credits.
      * @param hours the number of hours.
      * @param teacher the assigned teacher.
-     * @param additionalInfo additional practice group details.
+     * @param additionalInfo additional group practice details.
      */
     private void addCourseWithPracticeGroup(
             String name,
