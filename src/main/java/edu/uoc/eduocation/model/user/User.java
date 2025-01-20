@@ -73,10 +73,10 @@ public abstract class User {
         Gson gson = new Gson();
         Map<String, Object> data = new HashMap<>();
 
-        data.put("NIF", getNif());
-        data.put("Name", getName());
-        data.put("Surname", getSurname());
-        data.put("Birthdate", getBirthdate().toString());
+        data.put("nif", getNif());
+        data.put("name", getName());
+        data.put("surname", getSurname());
+        data.put("birthdate", getBirthdate().toString());
 
         return gson.toJson(data);
     }

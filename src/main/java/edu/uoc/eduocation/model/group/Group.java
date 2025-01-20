@@ -10,6 +10,7 @@ import java.util.Map;
 
 public class Group {
     private String name;
+
     private UserTeacher tutor;
     private LinkedList<UserStudent> students;
 
@@ -62,8 +63,8 @@ public class Group {
         Map<String, Object> data = new HashMap<>();
 
         data.put("name", getName());
-        data.put("tutorName", getTutor().getName());
-        data.put("numberOfStudents", getStudents().size());
+        data.put("tutor", String.format("%s %s", tutor.getName(), tutor.getSurname()));
+        data.put("studentsCount", getStudents().size());
 
         return gson.toJson(data);
     }

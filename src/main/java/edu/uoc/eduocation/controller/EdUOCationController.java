@@ -1,22 +1,31 @@
 package edu.uoc.eduocation.controller;
 
 import edu.uoc.eduocation.model.course.Course;
+import edu.uoc.eduocation.model.course.CourseException;
 import edu.uoc.eduocation.model.course.CourseType;
 import edu.uoc.eduocation.model.course.CourseWithExam.CourseWithExam;
+import edu.uoc.eduocation.model.course.CourseWithExam.CourseWithExamException;
 import edu.uoc.eduocation.model.course.CourseWithPracticeGroup.CourseWithPracticeGroup;
+import edu.uoc.eduocation.model.course.CourseWithPracticeGroup.CourseWithPracticeGroupException;
 import edu.uoc.eduocation.model.course.CourseWithPracticeIndividual.*;
 import edu.uoc.eduocation.model.course.CourseWithoutExam.CourseWithoutExam;
 import edu.uoc.eduocation.model.course.PracticeType;
 import edu.uoc.eduocation.model.enrollment.Enrollment;
+import edu.uoc.eduocation.model.enrollment.EnrollmentException;
 import edu.uoc.eduocation.model.enrollment.EnrollmentStatus;
 import edu.uoc.eduocation.model.enrollment.EnrollmentType;
 import edu.uoc.eduocation.model.enrollment.enrollmentIndividual.EnrollmentIndividual;
 import edu.uoc.eduocation.model.enrollment.enrollmentMultiple.EnrollmentMultiple;
+import edu.uoc.eduocation.model.group.GroupException;
+import edu.uoc.eduocation.model.school.SchoolException;
 import edu.uoc.eduocation.model.school.location.Location;
 import edu.uoc.eduocation.model.school.School;
 import edu.uoc.eduocation.model.group.Group;
+import edu.uoc.eduocation.model.school.location.LocationException;
+import edu.uoc.eduocation.model.user.UserException;
 import edu.uoc.eduocation.model.user.userStudent.UserStudent;
 import edu.uoc.eduocation.model.user.userTeacher.UserTeacher;
+import edu.uoc.eduocation.model.user.userTeacher.UserTeacherException;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -26,15 +35,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static edu.uoc.eduocation.model.enrollment.EnrollmentType.MULTIPLE;
-
 /**
  * Controller class for the EdUOCation application
  */
 public class EdUOCationController {
-    private LinkedList<School> schools;
-    private LinkedList<UserTeacher> teachers;
-    private LinkedList<Course> courses;
+    private final LinkedList<School> schools;
+    private final LinkedList<UserTeacher> teachers;
+    private final LinkedList<Course> courses;
 
     /**
      * Constructor that loads the data from the files
@@ -58,6 +65,7 @@ public class EdUOCationController {
         loadSchools(schoolsFilename);
         loadTeachers(teachersFilename);
         loadCourses(courseFilename);
+
         loadStudentGroups(studentGroupsFilename);
         loadEnrollments(enrollmentsFilename);
     }
@@ -239,25 +247,13 @@ public class EdUOCationController {
             String name,
             String... locations
     ) {
-        // Create locations
-        LinkedList<Location> schoolLocations = new LinkedList<>();
+        LinkedList<Location> list = addLocations(locations);
 
-        for (String location : locations) {
-            String[] arguments = location.split(",");
-
-            schoolLocations.add(new Location(
-                    arguments[0], // address
-                    arguments[1], // city
-                    arguments[2], // country
-                    arguments[3]  // phoneNumber
-            ));
+        try {
+            schools.add(new School(name, list));
+        } catch (SchoolException e) {
+            throw new RuntimeException(e.getMessage(), e);
         }
-
-        // Create school
-        schools.add(new School(
-                name,
-                schoolLocations
-        ));
     }
 
     /**
@@ -275,13 +271,17 @@ public class EdUOCationController {
             LocalDate birthdate,
             String department
     ) {
-        teachers.add(new UserTeacher(
-                nif,
-                name,
-                surname,
-                birthdate,
-                department
-        ));
+        try {
+            teachers.add(new UserTeacher(
+                    nif,
+                    name,
+                    surname,
+                    birthdate,
+                    department
+            ));
+        } catch (UserTeacherException | UserException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 
     /**
@@ -308,57 +308,45 @@ public class EdUOCationController {
         if (teacher == null)
             return;
 
-        String[] arguments;
-
         switch(CourseType.valueOf(type)) {
             case CourseWithoutExam:
-                courses.add(new CourseWithoutExam(
+                addCourseWithoutExam(
                         name,
                         code,
                         credits,
-                        hours
-                ));
+                        hours,
+                        teacher
+                );
                 break;
             case CourseWithExam:
-                arguments = additionalInfo.split(",");
-                LocalDateTime dateTime = LocalDateTime.parse(arguments[0]);
-
-                LocalDate date = dateTime.toLocalDate();
-                LocalTime time = dateTime.toLocalTime();
-
-                courses.add(new CourseWithExam(
+                addCourseWithExam(
                         name,
                         code,
                         credits,
                         hours,
-                        date, // Date
-                        time, // Time
-                        arguments[2], // Location
-                        arguments[3]  // Room
-                ));
+                        teacher,
+                        additionalInfo
+                );
                 break;
             case CourseWithPracticeGroup:
-                arguments = additionalInfo.split(",");
-
-                courses.add(new CourseWithPracticeGroup(
+                addCourseWithPracticeGroup(
                         name,
                         code,
                         credits,
                         hours,
-                        PracticeType.valueOf(arguments[0]), // Practice type
-                        Integer.parseInt(arguments[1]) // Maximum students
-                ));
+                        teacher,
+                        additionalInfo
+                );
                 break;
             case CourseWithPracticeIndividual:
-                arguments = additionalInfo.split(",");
-
-                courses.add(new CourseWithPracticeIndividual(
+                addCourseWithPracticeIndividual(
                         name,
                         code,
                         credits,
                         hours,
-                        PracticeType.valueOf(arguments[0]) // Practice type
-                ));
+                        teacher,
+                        additionalInfo
+                );
                 break;
         }
     }
@@ -376,34 +364,24 @@ public class EdUOCationController {
             String tutorNIF,
             String[] studentData
     ) {
-        // Get teacher
         UserTeacher tutor = getTeacher(tutorNIF);
 
         if (tutor == null)
             return;
 
-        // Create students
-        LinkedList<UserStudent> students = new LinkedList<>();
-
-        for (String student: studentData) {
-            String[] arguments = student.split(":");
-            students.add(new UserStudent(
-                    arguments[0], // nif
-                    arguments[1], // name
-                    arguments[2], // surname
-                    LocalDate.parse(arguments[3]) // birthdate
-            ));
-        }
-
-        // Get school
         for (School currentSchool : schools) {
             if (currentSchool.getName().equals(schoolName)) {
-                // Create and add group to school
-                currentSchool.addGroup(new Group(
-                        groupName,
-                        tutor,
-                        students
-                ));
+                LinkedList<UserStudent> students = addStudents(studentData);
+
+                try {
+                    currentSchool.addGroup(new Group(
+                            groupName,
+                            tutor,
+                            students
+                    ));
+                } catch (GroupException e) {
+                    throw new RuntimeException(e.getMessage(), e);
+                }
             }
         }
     }
@@ -431,19 +409,33 @@ public class EdUOCationController {
         for (School school : schools) {
             for (Group group : school.getGroups()) {
                 for (UserStudent student : group.getStudents()) {
-                    if (student.getNif().equals(studentNIF) && EnrollmentType.valueOf(enrollmentType) == MULTIPLE) {
+                    if (
+                            student.getNif().equals(studentNIF) &&
+                            EnrollmentType.valueOf(enrollmentType) == EnrollmentType.MULTIPLE
+                    ) {
                         String[] groupIds = additionalInfo.split(",");
 
-                        student.addEnrollment(new EnrollmentMultiple(
-                                semester,
-                                course,
-                                groupIds
-                        ));
-                    } else if (student.getNif().equals(studentNIF)) {
-                        student.addEnrollment(new EnrollmentIndividual(
-                                semester,
-                                course
-                        ));
+                        try {
+                            student.addEnrollment(new EnrollmentMultiple(
+                                    semester,
+                                    course,
+                                    groupIds
+                            ));
+                        } catch (UserException | EnrollmentException e) {
+                            throw new RuntimeException(e);
+                        }
+                    } else if (
+                            student.getNif().equals(studentNIF) &&
+                            EnrollmentType.valueOf(enrollmentType) == EnrollmentType.INDIVIDUAL
+                    ) {
+                        try {
+                            student.addEnrollment(new EnrollmentIndividual(
+                                    semester,
+                                    course
+                            ));
+                        } catch (EnrollmentException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
             }
@@ -457,10 +449,7 @@ public class EdUOCationController {
             String studentNif,
             double mark
     ) {
-        // Iterate over each school
         for (School school : schools) {
-
-            // Iterate over school groups
             for (Group group : school.getGroups()) {
 
                 // Iterate over group students
@@ -470,8 +459,9 @@ public class EdUOCationController {
                         // Iterate over student enrollments
                         for (Enrollment enrollment : student.getEnrollments()) {
                             if (
-                                    enrollment.getCourse().getName().equals(course) &&
-                                    enrollment.getSemester().equals(semester)
+                                    (enrollment.getCourse().getName().equals(course)) &&
+                                    (enrollment.getSemester().equals(semester)) &&
+                                    (mark >= 0 && mark <= 10)
                             ) {
                                 enrollment.setMark(mark);
                                 enrollment.setStatus(EnrollmentStatus.valueOf(status));
@@ -562,7 +552,6 @@ public class EdUOCationController {
     public List<String> getStudents(String schoolName, String groupName) {
         List<String> list = new ArrayList<>();
 
-        // Iterate over each school
         for (School school : schools) {
             if (school.getName().equals(schoolName)) {
 
@@ -594,11 +583,9 @@ public class EdUOCationController {
     public List<String> getEnrollments(String schoolName, String groupName, String studentNIF) {
         List<String> list = new ArrayList<>();
 
-        // Iterate over each school
         for (School school : schools) {
             if (school.getName().equals(schoolName)) {
 
-                // Iterate over school groups
                 for (Group group : school.getGroups()) {
                     if (group.getName().equals(groupName)) {
 
@@ -622,6 +609,27 @@ public class EdUOCationController {
         return list;
     }
 
+    private LinkedList<Location> addLocations(String[] locations) {
+        LinkedList<Location> list = new LinkedList<>();
+
+        for (String location : locations) {
+            String[] arguments = location.split(",");
+
+            try {
+                list.add(new Location(
+                        arguments[0], // address
+                        arguments[1], // city
+                        arguments[2], // country
+                        arguments[3]  // phoneNumber
+                ));
+            } catch (LocationException e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
+        }
+
+        return list;
+    }
+
     private UserTeacher getTeacher(String teacherNif) {
         for (UserTeacher teacher : teachers) {
             if (teacher.getNif().equals(teacherNif))
@@ -629,6 +637,125 @@ public class EdUOCationController {
         }
 
         return null;
+    }
+
+    private void addCourseWithExam(
+            String name,
+            String code,
+            Integer credits,
+            Integer hours,
+            UserTeacher teacher,
+            String additionalInfo
+    ) {
+        String[] arguments = additionalInfo.split(",");
+        LocalDateTime dateTime = LocalDateTime.parse(arguments[0]);
+
+        LocalDate date = dateTime.toLocalDate();
+        LocalTime time = dateTime.toLocalTime();
+
+        try {
+            courses.add(new CourseWithExam(
+                    name,
+                    code,
+                    credits,
+                    hours,
+                    teacher,
+                    date,
+                    time,
+                    String.format("%s, %s", arguments[1], arguments[2]), // Location
+                    arguments[3] // Room
+            ));
+        } catch (CourseException | CourseWithExamException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    private void addCourseWithPracticeGroup(
+            String name,
+            String code,
+            Integer credits,
+            Integer hours,
+            UserTeacher teacher,
+            String additionalInfo
+    ) {
+        String[] arguments = additionalInfo.split(",");
+
+        try {
+            courses.add(new CourseWithPracticeGroup(
+                    name,
+                    code,
+                    credits,
+                    hours,
+                    teacher,
+                    PracticeType.valueOf(arguments[0]), // Practice type
+                    Integer.parseInt(arguments[1]) // Maximum students
+            ));
+        } catch (CourseException | CourseWithPracticeGroupException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    private void addCourseWithoutExam(
+            String name,
+            String code,
+            Integer credits,
+            Integer hours,
+            UserTeacher teacher
+    ) {
+        try {
+            courses.add(new CourseWithoutExam(
+                    name,
+                    code,
+                    credits,
+                    hours,
+                    teacher
+            ));
+        } catch (CourseException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    private void addCourseWithPracticeIndividual(
+            String name,
+            String code,
+            Integer credits,
+            Integer hours,
+            UserTeacher teacher,
+            String additionalInfo
+    ) {
+        try {
+            courses.add(new CourseWithPracticeIndividual(
+                    name,
+                    code,
+                    credits,
+                    hours,
+                    teacher,
+                    PracticeType.valueOf(additionalInfo)
+            ));
+        } catch (CourseException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    private LinkedList<UserStudent> addStudents(String[] studentData) {
+        LinkedList<UserStudent> list = new LinkedList<>();
+
+        for (String student: studentData) {
+            String[] arguments = student.split(":");
+
+            try {
+                list.add(new UserStudent(
+                        arguments[0], // nif
+                        arguments[1], // name
+                        arguments[2], // surname
+                        LocalDate.parse(arguments[3]) // birthdate
+                ));
+            } catch (UserException e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
+        }
+
+        return list;
     }
 
     private Course getCourse(String courseCode) {
@@ -639,5 +766,4 @@ public class EdUOCationController {
 
         return null;
     }
-
 }

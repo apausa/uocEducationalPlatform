@@ -10,8 +10,9 @@ import java.util.Map;
 
 public class School {
     private String name;
+
     private LinkedList<Location> locations;
-    private LinkedList<Group> groups = new LinkedList<>();
+    private final LinkedList<Group> groups = new LinkedList<>();
 
     public School(
             String name,
@@ -60,8 +61,8 @@ public class School {
         Map<String, Object> data = new HashMap<>();
 
         data.put("name", getName());
-        data.put("numberOfLocations", getLocations().size());
-        data.put("numberOfGroups", getGroups().size());
+        data.put("locationsCount", getLocations().size());
+        data.put("groupsCount", getGroups().size());
 
         return gson.toJson(data);
     }

@@ -7,5 +7,6 @@
     <VBox alignment="TOP_CENTER" spacing="10" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0">
         <!-- Table for displaying content dynamically -->
         <TableView fx:id="mainTableView" prefHeight="400" prefWidth="600"/>
+        <Button fx:id="backButton" text="Back" onAction="#setupBackButton" styleClass="btn" textAlignment="CENTER"/>
     </VBox>
 </AnchorPane>

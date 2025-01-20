@@ -2,7 +2,7 @@ package edu.uoc.eduocation.model.course.CourseWithExam;
 
 import edu.uoc.eduocation.model.course.Course;
 import edu.uoc.eduocation.model.course.CourseException;
-import edu.uoc.eduocation.model.user.UserException;
+import edu.uoc.eduocation.model.user.userTeacher.UserTeacher;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -18,12 +18,13 @@ public class CourseWithExam extends Course {
             String code,
             Integer credits,
             Integer hours,
+            UserTeacher teacher,
             LocalDate date,
             LocalTime time,
             String location,
             String room
     ) throws CourseException, CourseWithExamException {
-        super(name, code, credits, hours);
+        super(name, code, credits, hours, teacher);
 
         setDate(date);
         setTime(time);
@@ -32,24 +33,24 @@ public class CourseWithExam extends Course {
     }
 
     public void setDate(LocalDate date) throws CourseWithExamException {
-        if (date == null || date.isAfter(LocalDate.now()))
+        if (date == null)
             throw new CourseWithExamException(CourseWithExamException.INVALID_DATE);
         else
             this.date = date;
     }
 
-    public LocalDate getDate() throws CourseWithExamException {
+    public LocalDate getDate() {
         return date;
     }
 
     public void setTime(LocalTime time) throws CourseWithExamException {
-        if (time == null || time.isAfter(LocalTime.now()))
+        if (time == null)
             throw new CourseWithExamException(CourseWithExamException.INVALID_TIME);
         else
             this.time = time;
     }
 
-    public LocalTime getTime() throws CourseWithExamException {
+    public LocalTime getTime() {
         return time;
     }
 
@@ -60,7 +61,7 @@ public class CourseWithExam extends Course {
             this.location = location.trim();
     }
 
-    public String getLocation() throws CourseWithExamException {
+    public String getLocation() {
         return location;
     }
 
@@ -71,7 +72,7 @@ public class CourseWithExam extends Course {
             this.room = room.trim();
     }
 
-    public String getRoom() throws CourseWithExamException {
+    public String getRoom() {
         return room;
     }
 }

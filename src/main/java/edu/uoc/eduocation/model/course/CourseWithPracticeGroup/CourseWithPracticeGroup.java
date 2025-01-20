@@ -3,6 +3,7 @@ package edu.uoc.eduocation.model.course.CourseWithPracticeGroup;
 import edu.uoc.eduocation.model.course.Course;
 import edu.uoc.eduocation.model.course.CourseException;
 import edu.uoc.eduocation.model.course.PracticeType;
+import edu.uoc.eduocation.model.user.userTeacher.UserTeacher;
 
 public class CourseWithPracticeGroup extends Course {
     private PracticeType practiceType;
@@ -13,10 +14,11 @@ public class CourseWithPracticeGroup extends Course {
             String code,
             Integer credits,
             Integer hours,
+            UserTeacher teacher,
             PracticeType practiceType,
             int maximumStudents
     ) throws CourseException, CourseWithPracticeGroupException {
-        super(name, code, credits, hours);
+        super(name, code, credits, hours, teacher);
 
         setPracticeType(practiceType);
         setMaximumStudents(maximumStudents);
@@ -37,7 +39,7 @@ public class CourseWithPracticeGroup extends Course {
             this.maximumStudents = maximumStudents;
     }
 
-    public int getMaximumStudents() throws CourseWithPracticeGroupException {
+    public int getMaximumStudents() {
         return maximumStudents;
     }
 }

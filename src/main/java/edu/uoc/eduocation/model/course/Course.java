@@ -1,7 +1,7 @@
 package edu.uoc.eduocation.model.course;
 
 import com.google.gson.Gson;
-import edu.uoc.eduocation.model.school.SchoolException;
+import edu.uoc.eduocation.model.user.userTeacher.UserTeacher;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,16 +12,20 @@ public abstract class Course {
     private Integer credits;
     private Integer hours;
 
+    private UserTeacher teacher;
+
     public Course(
             String name,
             String code,
             Integer credits,
-            Integer hours
+            Integer hours,
+            UserTeacher teacher
     ) throws CourseException {
         setName(name);
         setCode(code);
         setCredits(credits);
         setHours(hours);
+        setTeacher(teacher);
     }
 
     public void setName(String name) throws CourseException {
@@ -68,7 +72,17 @@ public abstract class Course {
         return hours;
     }
 
-    // Override
+    // Teacher class
+
+    public void setTeacher(UserTeacher teacher) {
+        this.teacher = teacher;
+    }
+
+    public UserTeacher getTeacher() {
+        return teacher;
+    }
+
+    // Override toString
 
     @Override
     public String toString() {

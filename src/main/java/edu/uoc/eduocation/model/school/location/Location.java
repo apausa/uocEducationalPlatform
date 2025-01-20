@@ -1,7 +1,5 @@
 package edu.uoc.eduocation.model.school.location;
 
-import edu.uoc.eduocation.model.school.SchoolException;
-
 public class Location {
     private String address;
     private String city;

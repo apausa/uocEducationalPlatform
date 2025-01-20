@@ -9,22 +9,24 @@ import java.util.Map;
 public abstract class Enrollment {
     private String semester;
     private EnrollmentStatus status;
-    private double mark;
+    private Double mark = null;
     private Course course;
 
     public Enrollment(
             String semester,
             Course course,
             EnrollmentStatus status
-
-    ) {
+    ) throws EnrollmentException {
         setSemester(semester);
         setCourse(course);
         setStatus(status);
     }
 
-    public void setSemester(String semester) {
-        this.semester = semester;
+    public void setSemester(String semester) throws EnrollmentException {
+        if (semester == null || semester.isEmpty())
+            throw new EnrollmentException(EnrollmentException.INVALID_SEMESTER);
+        else
+            this.semester = semester;
     }
 
     public String getSemester() {
@@ -39,11 +41,11 @@ public abstract class Enrollment {
         return status;
     }
 
-    public void setMark(double mark) {
+    public void setMark(Double mark) {
         this.mark = mark;
     }
 
-    public double getMark() {
+    public Double getMark() {
         return mark;
     }
 
