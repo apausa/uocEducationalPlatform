@@ -8,6 +8,17 @@ import java.time.LocalDate;
 public class UserTeacher extends User {
     private String department;
 
+    /**
+     * Constructs a UserTeacher with the specified details.
+     *
+     * @param nif the NIF of the teacher.
+     * @param name the name of the teacher.
+     * @param surname the surname of the teacher.
+     * @param birthdate the birthdate of the teacher.
+     * @param department the department of the teacher.
+     * @throws UserTeacherException if teacher-specific validation fails.
+     * @throws UserException if user validation fails.
+     */
     public UserTeacher(
             String nif,
             String name,

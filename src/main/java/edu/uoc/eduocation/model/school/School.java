@@ -14,6 +14,13 @@ public class School {
     private LinkedList<Location> locations;
     private final LinkedList<Group> groups = new LinkedList<>();
 
+    /**
+     * Constructs a School with the specified details.
+     *
+     * @param name the name of the school.
+     * @param locations the list of school locations.
+     * @throws SchoolException if school validation fails.
+     */
     public School(
             String name,
             LinkedList<Location> locations

@@ -12,6 +12,15 @@ public abstract class User {
     private String surname;
     private LocalDate birthdate;
 
+    /**
+     * Constructs a User with the specified details.
+     *
+     * @param nif the NIF of the user.
+     * @param name the name of the user.
+     * @param surname the surname of the user.
+     * @param birthdate the birthdate of the user.
+     * @throws UserException if user validation fails.
+     */
     public User (
             String nif,
             String name,

@@ -14,6 +14,14 @@ public class Group {
     private UserTeacher tutor;
     private LinkedList<UserStudent> students;
 
+    /**
+     * Constructs a Group with the specified details.
+     *
+     * @param name the name of the group.
+     * @param tutor the assigned tutor.
+     * @param students the list of students in the group.
+     * @throws GroupException if group validation fails.
+     */
     public Group(
             String name,
             UserTeacher tutor,

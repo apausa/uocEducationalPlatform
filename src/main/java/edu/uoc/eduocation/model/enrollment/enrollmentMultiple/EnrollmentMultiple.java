@@ -9,6 +9,14 @@ import edu.uoc.eduocation.model.user.UserException;
 public class EnrollmentMultiple extends Enrollment {
     String[] nifs;
 
+    /**
+     * Constructs an EnrollmentMultiple with the specified details.
+     * @param semester the semester of the enrollment.
+     * @param course the enrolled course.
+     * @param nifs the array of student NIFs.
+     * @throws UserException if user-related validation fails.
+     * @throws EnrollmentException if enrollment validation fails.
+     */
     public EnrollmentMultiple(
             String semester,
             Course course,

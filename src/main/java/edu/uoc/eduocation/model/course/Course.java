@@ -6,6 +6,9 @@ import edu.uoc.eduocation.model.user.userTeacher.UserTeacher;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Course abstract class
+ */
 public abstract class Course {
     private String name;
     private String code;
@@ -14,6 +17,16 @@ public abstract class Course {
 
     private UserTeacher teacher;
 
+    /**
+     * Constructs a Course with the specified details.
+     *
+     * @param name the course name.
+     * @param code the course code.
+     * @param credits the number of credits.
+     * @param hours the number of hours.
+     * @param teacher the assigned teacher.
+     * @throws CourseException if any validation fails.
+     */
     public Course(
             String name,
             String code,

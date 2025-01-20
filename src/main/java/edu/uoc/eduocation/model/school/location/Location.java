@@ -6,6 +6,15 @@ public class Location {
     private String country;
     private String phone;
 
+    /**
+     * Constructs a Location with the specified details.
+     *
+     * @param address the address of the location.
+     * @param city the city of the location.
+     * @param country the country of the location.
+     * @param phone the contact phone number.
+     * @throws LocationException if location validation fails.
+     */
     public Location(
             String address,
             String city,

@@ -10,6 +10,15 @@ import java.util.LinkedList;
 public class UserStudent extends User {
     public LinkedList<Enrollment> enrollments = new LinkedList<>();
 
+    /**
+     * Constructs a UserStudent with the specified details.
+     *
+     * @param nif the NIF of the student.
+     * @param name the name of the student.
+     * @param surname the surname of the student.
+     * @param birthdate the birthdate of the student.
+     * @throws UserException if user validation fails.
+     */
     public UserStudent(
             String nif,
             String name,

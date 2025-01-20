@@ -13,6 +13,20 @@ public class CourseWithExam extends Course {
     private String location;
     private String room;
 
+    /**
+     * Constructs a CourseWithExam with the specified details.
+     * @param name the course name.
+     * @param code the course code.
+     * @param credits the number of credits.
+     * @param hours the number of hours.
+     * @param teacher the assigned teacher.
+     * @param date the exam date.
+     * @param time the exam time.
+     * @param location the exam location.
+     * @param room the exam room.
+     * @throws CourseException if any validation fails.
+     * @throws CourseWithExamException if exam-specific validation fails.
+     */
     public CourseWithExam(
             String name,
             String code,

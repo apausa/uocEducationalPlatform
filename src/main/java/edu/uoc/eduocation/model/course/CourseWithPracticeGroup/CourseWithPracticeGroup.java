@@ -9,6 +9,18 @@ public class CourseWithPracticeGroup extends Course {
     private PracticeType practiceType;
     private int maximumStudents;
 
+    /**
+     * Constructs a CourseWithPracticeGroup with the specified details.
+     * @param name the course name.
+     * @param code the course code.
+     * @param credits the number of credits.
+     * @param hours the number of hours.
+     * @param teacher the assigned teacher.
+     * @param practiceType the type of practice.
+     * @param maximumStudents the maximum number of students.
+     * @throws CourseException if any validation fails.
+     * @throws CourseWithPracticeGroupException if practice group validation fails.
+     */
     public CourseWithPracticeGroup(
             String name,
             String code,

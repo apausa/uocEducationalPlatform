@@ -364,11 +364,13 @@ public class EdUOCationController {
             String tutorNIF,
             String[] studentData
     ) {
+        // Get tutor from NIF
         UserTeacher tutor = getTeacher(tutorNIF);
 
         if (tutor == null)
             return;
 
+        // Iterate over each school
         for (School currentSchool : schools) {
             if (currentSchool.getName().equals(schoolName)) {
                 LinkedList<UserStudent> students = addStudents(studentData);
@@ -401,6 +403,7 @@ public class EdUOCationController {
             String enrollmentType,
             String additionalInfo
     ) {
+        // Get course from code
         Course course = getCourse(courseCode);
 
         if (course == null)
@@ -408,6 +411,8 @@ public class EdUOCationController {
 
         for (School school : schools) {
             for (Group group : school.getGroups()) {
+
+                // Iterate over group students
                 for (UserStudent student : group.getStudents()) {
                     if (
                             student.getNif().equals(studentNIF) &&
@@ -416,6 +421,7 @@ public class EdUOCationController {
                         String[] groupIds = additionalInfo.split(",");
 
                         try {
+                            // Add a multiple enrollment
                             student.addEnrollment(new EnrollmentMultiple(
                                     semester,
                                     course,
@@ -429,6 +435,7 @@ public class EdUOCationController {
                             EnrollmentType.valueOf(enrollmentType) == EnrollmentType.INDIVIDUAL
                     ) {
                         try {
+                            // Add an individual enrollment
                             student.addEnrollment(new EnrollmentIndividual(
                                     semester,
                                     course
@@ -442,6 +449,15 @@ public class EdUOCationController {
         }
     }
 
+    /**
+     * Updates a student's enrollment mark and status.
+     * @param course the course name.
+     * @param semester the semester.
+     * @param status the enrollment status.
+     * @param studentNif the student's NIF.
+     * @param mark the new mark.
+     * @return {@code true} if updated successfully, {@code false} otherwise.
+     */
     public boolean updateEnrollmentMark(
             String course,
             String semester,
@@ -609,6 +625,11 @@ public class EdUOCationController {
         return list;
     }
 
+    /**
+     * Converts an array of location strings into a list of Location objects.
+     * @param locations array of location strings.
+     * @return a list of Location objects.
+     */
     private LinkedList<Location> addLocations(String[] locations) {
         LinkedList<Location> list = new LinkedList<>();
 
@@ -630,6 +651,11 @@ public class EdUOCationController {
         return list;
     }
 
+    /**
+     * Retrieves a teacher by their NIF.
+     * @param teacherNif the NIF of the teacher.
+     * @return the matching UserTeacher, or {@code null} if not found.
+     */
     private UserTeacher getTeacher(String teacherNif) {
         for (UserTeacher teacher : teachers) {
             if (teacher.getNif().equals(teacherNif))
@@ -639,6 +665,16 @@ public class EdUOCationController {
         return null;
     }
 
+
+    /**
+     * Adds a course with an associated exam.
+     * @param name the course name.
+     * @param code the course code.
+     * @param credits the number of credits.
+     * @param hours the number of hours.
+     * @param teacher the assigned teacher.
+     * @param additionalInfo additional exam details.
+     */
     private void addCourseWithExam(
             String name,
             String code,
@@ -670,6 +706,15 @@ public class EdUOCationController {
         }
     }
 
+    /**
+     * Adds a course with an associated practice group.
+     * @param name the course name.
+     * @param code the course code.
+     * @param credits the number of credits.
+     * @param hours the number of hours.
+     * @param teacher the assigned teacher.
+     * @param additionalInfo additional practice group details.
+     */
     private void addCourseWithPracticeGroup(
             String name,
             String code,
@@ -695,6 +740,15 @@ public class EdUOCationController {
         }
     }
 
+
+    /**
+     * Adds a course without an associated exam.
+     * @param name the course name.
+     * @param code the course code.
+     * @param credits the number of credits.
+     * @param hours the number of hours.
+     * @param teacher the assigned teacher.
+     */
     private void addCourseWithoutExam(
             String name,
             String code,
@@ -715,6 +769,15 @@ public class EdUOCationController {
         }
     }
 
+    /**
+     * Adds a course with an associated individual practice.
+     * @param name the course name.
+     * @param code the course code.
+     * @param credits the number of credits.
+     * @param hours the number of hours.
+     * @param teacher the assigned teacher.
+     * @param additionalInfo the practice type.
+     */
     private void addCourseWithPracticeIndividual(
             String name,
             String code,
@@ -737,6 +800,12 @@ public class EdUOCationController {
         }
     }
 
+
+    /**
+     * Converts an array of student data strings into a list of UserStudent objects.
+     * @param studentData array of student data strings.
+     * @return a list of UserStudent objects.
+     */
     private LinkedList<UserStudent> addStudents(String[] studentData) {
         LinkedList<UserStudent> list = new LinkedList<>();
 
@@ -758,6 +827,11 @@ public class EdUOCationController {
         return list;
     }
 
+    /**
+     * Retrieves a course by its code.
+     * @param courseCode the code of the course.
+     * @return the matching Course, or {@code null} if not found.
+     */
     private Course getCourse(String courseCode) {
         for (Course course : courses) {
             if (course.getCode().equals(courseCode))

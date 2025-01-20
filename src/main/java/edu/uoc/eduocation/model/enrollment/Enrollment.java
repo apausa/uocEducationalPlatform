@@ -12,6 +12,14 @@ public abstract class Enrollment {
     private Double mark = null;
     private Course course;
 
+    /**
+     * Constructs an Enrollment with the specified details.
+     *
+     * @param semester the semester of the enrollment.
+     * @param course the enrolled course.
+     * @param status the enrollment status.
+     * @throws EnrollmentException if any validation fails.
+     */
     public Enrollment(
             String semester,
             Course course,
