@@ -6,6 +6,10 @@ public class UserException extends Exception {
     public static final String INVALID_SURNAME = "[ERROR] User surname can't be null, empty or blank";
     public static final String INVALID_DATE = "[ERROR] User birthdate can't be null or future";
 
+    /**
+     * Exception thrown for errors related to user operations.
+     * @param message the detail message.
+     */
     public UserException(String message) {
         super(message);
     }

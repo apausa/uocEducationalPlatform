@@ -6,6 +6,10 @@ public class CourseWithExamException extends Exception {
   public static final String INVALID_LOCATION = "[ERROR] Exam location can't be null, empty or blank";
   public static final String INVALID_ROOM = "[ERROR] Exam room can't be null, empty or blank";
 
+  /**
+   * Exception thrown for errors related to courses with exams.
+   * @param message the detail message.
+   */
   public CourseWithExamException(String message) {
         super(message);
     }
