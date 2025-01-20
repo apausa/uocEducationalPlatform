@@ -3,7 +3,6 @@ package edu.uoc.eduocation.model.enrollment.enrollmentMultiple;
 import edu.uoc.eduocation.model.course.Course;
 import edu.uoc.eduocation.model.enrollment.Enrollment;
 import edu.uoc.eduocation.model.enrollment.EnrollmentException;
-import edu.uoc.eduocation.model.enrollment.EnrollmentStatus;
 import edu.uoc.eduocation.model.user.UserException;
 
 public class EnrollmentMultiple extends Enrollment {
@@ -24,10 +23,10 @@ public class EnrollmentMultiple extends Enrollment {
     ) throws UserException, EnrollmentException {
         super(semester, course);
 
-        setGroupNifs(nifs);
+        setNifs(nifs);
     }
 
-    public void setGroupNifs(String[] nifs) throws UserException {
+    public void setNifs(String[] nifs) throws UserException {
         for (String nif : nifs) {
             if (!nif.matches("^[0-9]{8}[A-Za-z]$"))
                 throw new UserException(UserException.INVALID_NIF);
@@ -36,7 +35,7 @@ public class EnrollmentMultiple extends Enrollment {
         }
     }
 
-    public String[] getGroupNifs() {
+    public String[] getNifs() {
         return nifs;
     }
 }
